@@ -1,2 +1,10 @@
-const { request, response } = require("express");
-const db = require('../controller/parking');
+class User{
+    constructor(cv, nombre, clave, supervisor){
+        this.cv = cv;
+        this.nombre = nombre;
+        this.clave = clave;
+        this.supervisor = supervisor;
+    }
+}
+
+module.exports = User;

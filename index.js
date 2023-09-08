@@ -1,35 +1,45 @@
+const db = require("./controller/parking");
 const express = require("express");
 const bodyParser = require("body-parser");
-const cars = require("./models/cars");
-const client = require("./models/clients");
-const comp = require("./models/company");
-const plac = require("./models/places");
-const tck = require("./models/ticket");
-const user = require("./models/users");
+const cors = require('cors');
+
+//clases
+const company = require('./models/company');
 
 // incializamos el servidor
 const app = express();
 const port = 3000;
+const router = express.Router();
 
+app.use(cors());
 app.use(express.json());
 app.use(
-    bodyParser.urlencoded({
-        extended: true
-    })
+  bodyParser.urlencoded({
+    extended: true,
+  })
 );
+app.use("/api", router);
 
-app.get('/', (req, res) => {
-    res.json({
-        Bienvenido: "API creada con NODEJS, Express y MSSQL"
-    });
+router.use((request, response, next) => {
+  console.log("middleware");
+  next();
 });
 
-app.get('/cars/', cars.getData);
+router.route('/company').get((request, response) => {
+    db.getCompanyData().then((data) => {
+      response.json(data[0]);
+    })
+  });  
 
-app.get('/company/', comp.getData);
-app.put('/company/', comp.updateData);
+  router.route('/company').put((request, response) => {
+    let company = { ...request.body };
+    console.log(company);
+    db.updateCompanyData(company).then((data) => {
+      response.status(201).json(data);
+    })
+  });
 
 // ponemos el Server en escucha en port 3000
 app.listen(port, () => {
-    console.log("API ejecutandose en el puerto:"+ port);
-});
+    console.log("API ejecutandose en el puerto:" + port);
+  });

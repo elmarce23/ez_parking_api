@@ -75,6 +75,7 @@ async function getCarData(carPlate) {
     if (carPlate != null && carPlate != undefined) {
       query += " WHERE matricula = @Matricula"; // If carPlate isn't null, add Where clause
     }
+    console.log(query);
     let pool = await sql.connect(config);
     let car = await pool
       .request()
@@ -86,11 +87,17 @@ async function getCarData(carPlate) {
   }
 }
 
-async function addCar(){
+async function addCar(car){
     try {
-        let data = {};
         let pool = await sql.connect(config);
-    let car = await pool;
+        let car = await pool.request()
+        .input("Matricula", sql.VarChar, company.Matricula)
+        .input("Color", sql.VarChar, company.Color)
+        .input("Tipo", sql.VarChar, company.Tipo)
+        .query(
+            "INSERT INTO Vehiculos VALUES (@Matricula. @Color, @Tipo)"
+        );
+        return car.recordsets;
     } catch (error) {
         console.log(error);
     }
@@ -104,4 +111,5 @@ module.exports = {
   getCompanyData: getCompanyData,
   updateCompanyData: updateCompanyData,
   getCarData: getCarData,
+  addCar: addCar
 };

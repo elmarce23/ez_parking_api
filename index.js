@@ -32,6 +32,12 @@ router.route("/cars").get((req, res) => {
   });
 });
 
+router.route('/cars/:matricula').get((req, res) => {
+  db.getCarData(req.params.matricula).then((data) => {
+    res.json(data[0]);
+  });
+});
+
 router.route("/places").get((req, res) => {
   db.getFreePlaces().then((data) => {
     res.json(data[0]);

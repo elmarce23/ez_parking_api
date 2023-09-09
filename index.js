@@ -1,10 +1,10 @@
 const db = require("./controller/parking");
 const express = require("express");
 const bodyParser = require("body-parser");
-const cors = require('cors');
+const cors = require("cors");
 
 //clases
-const company = require('./models/company');
+const company = require("./models/company");
 
 // incializamos el servidor
 const app = express();
@@ -18,6 +18,7 @@ app.use(
     extended: true,
   })
 );
+
 app.use("/api", router);
 
 router.use((request, response, next) => {
@@ -25,21 +26,33 @@ router.use((request, response, next) => {
   next();
 });
 
-router.route('/company').get((request, response) => {
-    db.getCompanyData().then((data) => {
-      response.json(data[0]);
-    })
-  });  
-
-  router.route('/company').put((request, response) => {
-    let company = { ...request.body };
-    console.log(company);
-    db.updateCompanyData(company).then((data) => {
-      response.status(201).json(data);
-    })
+router.route("/cars").get((req, res) => {
+  db.getCarTypes().then((data) => {
+    res.json(data[0]);
   });
+});
+
+router.route("/places").get((req, res) => {
+  db.getFreePlaces().then((data) => {
+    res.json(data[0]);
+  });
+});
+
+router.route("/company").get((request, response) => {
+  db.getCompanyData().then((data) => {
+    response.json(data[0]);
+  });
+});
+
+router.route("/company").put((request, response) => {
+  let company = { ...request.body };
+  console.log(company);
+  db.updateCompanyData(company).then((data) => {
+    response.status(201).json(data);
+  });
+});
 
 // ponemos el Server en escucha en port 3000
 app.listen(port, () => {
-    console.log("API ejecutandose en el puerto:" + port);
-  });
+  console.log("API ejecutandose en el puerto:" + port);
+});

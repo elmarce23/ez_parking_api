@@ -1,7 +1,13 @@
-const db = require("./controller/parking");
+// importing tools
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
+// importing models
+const ticket = require("./controller/parking");
+const car = require("./controller/car");
+const company = require("./controller/company");
+const dicc = require("./controller/dictionaries");
 
 //clases
 const company = require("./models/company");
@@ -27,38 +33,39 @@ router.use((request, response, next) => {
 });
 
 router.route("/cars").get((req, res) => {
-  db.getCarTypes().then((data) => {
+  car.getCarTypes().then((data) => {
     res.json(data[0]);
   });
 });
 
 router.route('/cars/:matricula').get((req, res) => {
-  db.getCarData(req.params.matricula).then((data) => {
+  car.getCarData(req.params.matricula).then((data) => {
     res.json(data[0]);
   });
 });
 
 router.route("/places").get((req, res) => {
-  db.getFreePlaces().then((data) => {
+  dicc.getFreePlaces().then((data) => {
     res.json(data[0]);
   });
 });
 
 router.route("/company").get((request, response) => {
-  db.getCompanyData().then((data) => {
+  company.getCompanyData().then((data) => {
     response.json(data[0]);
   });
 });
 
 router.route("/company").put((request, response) => {
-  let company = { ...request.body };
-  console.log(company);
-  db.updateCompanyData(company).then((data) => {
+  let companyd = { ...request.body };
+  console.log(companyd);
+  company.updateCompanyData(companyd).then((data) => {
     response.status(201).json(data);
   });
 });
 
 // ponemos el Server en escucha en port 3000
+// put server listening on port 3000 
 app.listen(port, () => {
   console.log("API ejecutandose en el puerto:" + port);
 });

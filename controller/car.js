@@ -21,14 +21,14 @@ async function getCarData(carPlate) {
   }
 }
 
-async function addCar(car) {
+async function addCar(cara) {
   try {
     let pool = await sql.connect(config);
     let car = await pool
       .request()
-      .input("Matricula", sql.VarChar, company.Matricula)
-      .input("Color", sql.VarChar, company.Color)
-      .input("Tipo", sql.VarChar, company.Tipo)
+      .input("Matricula", sql.VarChar, cara.Matricula)
+      .input("Color", sql.VarChar, cara.Color)
+      .input("Tipo", sql.VarChar, cara.Tipo)
       .query("INSERT INTO Vehiculos VALUES (@Matricula. @Color, @Tipo)");
     return car.recordsets;
   } catch (error) {
@@ -48,14 +48,14 @@ async function delCar(carPlate) {
   }
 }
 
-async function modCar(car) {
+async function modCar(carm) {
   try {
     let pool = await sql.connect(config);
     let car = await pool
       .request()
-      .input("Matricula", sql.VarChar, company.Matricula)
-      .input("Color", sql.VarChar, company.Color)
-      .input("Tipo", sql.VarChar, company.Tipo)
+      .input("Matricula", sql.VarChar, carm.Matricula)
+      .input("Color", sql.VarChar, carm.Color)
+      .input("Tipo", sql.VarChar, carm.Tipo)
       .query(
         "UPDATE Vehiculos SET color =  @Color, tipo = @Tipo WHERE matricula = @Matricula"
       );

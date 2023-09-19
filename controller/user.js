@@ -38,10 +38,10 @@ async function newUser(user) {
     let pool = await sql.connect(config);
     let q = await pool
       .request()
-      .input("CV", sql.VarChar, user.cv)
+      .input("CV", sql.Int, user.cv)
       .input("Nombre", sql.VarChar, user.Nombre)
       .input("Clave", sql.VarChar, user.Clave)
-      .input("Supervisor", sql.VarChar, user.Supervisor)
+      .input("Supervisor", sql.TinyInt, user.Supervisor)
       .query("INSERT INTO Usuarios VALUES (@CV. @Nombre, @Clave, @Supervisor)");
     return q.recordsets;
   } catch (error) {
@@ -49,17 +49,32 @@ async function newUser(user) {
   }
 }
 
-async function updateUser() {
+async function updateUser(user) {
   // TODO CODE here
   try {
+    let pool = await sql.connect(config);
+    let q = await pool
+      .request()
+      .input("CV", sql.Int, user.cv)
+      .input("Nombre", sql.VarChar, user.Nombre)
+      .input("Clave", sql.VarChar, user.Clave)
+      .input("Supervisor", sql.TinyInt, user.Supervisor)
+      .query("UPDATE Usuarios SET nombre = @Nombre, clave = @Clave, supervisor = @Supervisor WHERE cv = @CV");
+    return q.recordsets;
   } catch (error) {
     console.log(error);
   }
 }
 
-async function delUser() {
+async function delUser(cvUser) {
   // TODO CODE here
   try {
+    let pool = await sql.connect(config);
+    let q = await pool
+      .request()
+      .input("CV", sql.Int, cvUser)
+      .query("DELETE FROM Usuarios WHERE cv = @CV");
+    return q.recordsets;
   } catch (error) {
     console.log(error);
   }
@@ -70,5 +85,5 @@ module.exports = {
   getUsers: getUsers,
   newUser: newUser,
   updateUser: updateUser,
-  delUser: delUser,
+  delUser: delUser
 };

@@ -29,7 +29,7 @@ async function addCar(cara) {
       .input("Matricula", sql.VarChar, cara.Matricula)
       .input("Color", sql.VarChar, cara.Color)
       .input("Tipo", sql.VarChar, cara.Tipo)
-      .query("INSERT INTO Vehiculos VALUES (@Matricula. @Color, @Tipo)");
+      .query("INSERT INTO Vehiculos VALUES (@Matricula, @Color, @Tipo)");
     return car.recordsets;
   } catch (error) {
     console.log(error);
@@ -57,7 +57,7 @@ async function modCar(carm) {
       .input("Color", sql.VarChar, carm.Color)
       .input("Tipo", sql.VarChar, carm.Tipo)
       .query(
-        "UPDATE Vehiculos SET color =  @Color, tipo = @Tipo WHERE matricula = @Matricula"
+        "UPDATE Vehiculos SET color = @Color, tipo = @Tipo WHERE matricula = @Matricula"
       );
     return car.recordsets;
   } catch (error) {

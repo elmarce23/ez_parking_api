@@ -10,7 +10,7 @@ const company = require("./controller/company");
 const dicc = require("./controller/dictionaries");
 
 //clases
-const company = require("./models/company");
+const company_m = require("./models/company");
 
 // incializamos el servidor
 const app = express();
@@ -32,6 +32,7 @@ router.use((request, response, next) => {
   next();
 });
 
+//vehiculos
 router.route("/cars").get((req, res) => {
   car.getCarTypes().then((data) => {
     res.json(data[0]);
@@ -44,12 +45,33 @@ router.route('/cars/:matricula').get((req, res) => {
   });
 });
 
+router.route("/cars").post((req, res) => {
+  let card = { ...req.body };
+  car.addCar(card).then((data) => {
+    res.status(201).json(data);
+  });
+});
+
+//lugares
 router.route("/places").get((req, res) => {
   dicc.getFreePlaces().then((data) => {
     res.json(data[0]);
   });
 });
 
+router.route("/type").get((req, res) => {
+  dicc.getFreePlaces().then((data) => {
+    res.json(data[0]);
+  });
+});
+
+router.route("/places").get((req, res) => {
+  dicc.getFreePlaces().then((data) => {
+    res.json(data[0]);
+  });
+});
+
+//company
 router.route("/company").get((request, response) => {
   company.getCompanyData().then((data) => {
     response.json(data[0]);
